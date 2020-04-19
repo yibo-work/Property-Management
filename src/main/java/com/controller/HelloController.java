@@ -1,6 +1,5 @@
 package com.controller;
 
-import com.pojo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -28,10 +27,10 @@ public class HelloController {
     @GetMapping("/index")
     public String index(HttpSession session) {
         //默认，不用登录
-        User user = new User();
-        user.setName("chen");
-        user.setPassword("123qwe");
-        session.setAttribute("USER", user);
+//        User user = new User();
+//        user.setName("chen");
+//        user.setPassword("123qwe");
+//        session.setAttribute("USER", user);
         return "index";
     }
 

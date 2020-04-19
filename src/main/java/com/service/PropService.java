@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * @author Clrvn
  * @description 属性Service
- * @date 2020/4/18 0018 23:18
+ * @date 2020/4/18 23:18
  */
 @Service
 public class PropService {

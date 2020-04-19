@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * @author Clrvn
  * @description 数据工具类
- * @date 2020/4/18 0018 17:01
+ * @date 2020/4/19 17:01
  */
 public class DataUtil {
 
@@ -21,13 +21,13 @@ public class DataUtil {
     /**
      * 定义属性列表
      */
-
     public static Set<Prop> propList = new LinkedHashSet<>();
     /**
      * 自定义数据列表
      */
     public static List<Data> dataList = new ArrayList<>();
 
+    /*下面三个是我自己加的默认数据，你不要的话可以删除 -- start*/
     static {
         User user = new User();
         user.setName("admin");
@@ -57,11 +57,8 @@ public class DataUtil {
     }
 
     static {
-
         Data data = new Data();
-
         int i = 0;
-
         LinkedHashSet<Prop> propList = DataUtil.propList.stream()
                 .sorted(Comparator.comparingInt(Prop::getOrder))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
@@ -96,16 +93,9 @@ public class DataUtil {
         System.err.println(dataList.toString());
     }
 
+    /* 删除到这里 -- end */
+
     private DataUtil() {
-    }
-
-    public static void main(String[] args) {
-        /*System.err.println(DataUtil.propList.removeIf(prop -> "测试字段".equals(prop.getName())));
-        System.out.println(DataUtil.propList.size());*/
-
-       /* DataUtil.propList.stream()
-                .sorted(Comparator.comparingInt(Prop::getOrder))
-                .forEach(System.out::println);*/
     }
 
 }
