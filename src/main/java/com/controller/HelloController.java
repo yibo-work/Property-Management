@@ -16,6 +16,11 @@ public class HelloController {
         return "login";
     }
 
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
     @GetMapping("loginOut")
     public String loginOut(HttpSession session) {
         session.removeAttribute("USER");

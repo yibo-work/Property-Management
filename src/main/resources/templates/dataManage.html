@@ -43,20 +43,22 @@
                         <thead>
                         <tr>
                             <th v-for="prop,i in propList">{{prop.name}}</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="data,i in dataList">
-                            <template v-for="prop,j in propList">
-                                <td>
-                                    <template v-for="dataProp,k in data.propList">
-                                        <span v-if="prop.name==dataProp.name">{{dataProp.value}}</span>
-                                    </template>
-                                </td>
-                            </template>
-                        </tr>
-                        <tr v-if="dataList.total == 0">
-                            <td colspan="6" style="text-align: center">暂无数据信息！</td>
+                            <td v-for="prop,j in propList">
+                                <template v-for="dataProp,k in data.propList">
+                                    <span v-if="prop.name==dataProp.name">{{dataProp.value}}</span>
+                                </template>
+                            </td>
+                            <td>
+                                <button @click="removeData(JSON.stringify(data))" class="layui-btn layui-btn-danger"
+                                        id="delData">
+                                    <i class="layui-icon">&#xe640;</i>删除
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -84,15 +86,19 @@
             exportExcel: function () {
                 var $form = $('<form action="/data/exportData" method="post" target="_blank"></form>');
                 $form.appendTo('body').submit().remove();
-                /*layer.confirm('确认要导出吗？',
+            },
+            /**
+             * 删除数据
+             */
+            removeData: function (data) {
+                layer.confirm('确认要删除吗？',
                     function () {
                         //发异步删除数据
-                        /!*$.ajax({
-                            url: "/data/removeDataByName",
-                            data: {
-                                name: name
-                            },
+                        $.ajax({
+                            url: "/data/removeData",
+                            data: data,
                             dataType: "json",
+                            contentType: "application/json",
                             type: "delete",
                             success: function (result) {
                                 if (result.code === 200) {
@@ -107,9 +113,9 @@
                                     layer.alert(result.msg, {icon: 5});
                                 }
                             }
-                        });*!/
+                        });
 
-                    });*/
+                    });
             }
         },
         created: function () {

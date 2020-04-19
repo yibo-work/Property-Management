@@ -4,8 +4,10 @@ import com.pojo.Data;
 import com.pojo.Prop;
 import com.pojo.User;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Clrvn
@@ -28,7 +30,7 @@ public class DataUtil {
     public static List<Data> dataList = new ArrayList<>();
 
     /*下面三个是我自己加的默认数据，你不要的话可以删除 -- start*/
-    static {
+    /*static {
         User user = new User();
         user.setName("admin");
         user.setPassword("123");
@@ -91,7 +93,7 @@ public class DataUtil {
         dataList.add(data2);
 
         System.err.println(dataList.toString());
-    }
+    }*/
 
     /* 删除到这里 -- end */
 

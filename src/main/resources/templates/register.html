@@ -69,28 +69,4 @@
 
         });
 
-    /*    //提交
-        $("#submits").click(function () {
-            var user = {};
-            user["username"] = $("[name=username]").val();
-            user["userpassword"] = $("[name=userpassword]").val();
-            user["userphone"] = $("[name=userphone]").val();
-            user["useraddress"] = $("[name=useraddress]").val();
-            user.usertype = 1;
-            $.ajax({
-                url: "/user/adduser",
-                type: "post",
-                data: JSON.stringify(user),
-                dataType: "json",
-                contentType: "application/json",
-                success: function (data) {
-                    if (data.code == 200) {
-                        alert("注册成功");
-                        location.href = "/user/gotologin";
-                    } else {
-                        alert("注册失败");
-                    }
-                }
-            });
-        });*/
 </script>

@@ -168,17 +168,22 @@
                         return false;
                     }
 
+                    if (data.field.type == 1 && data.field.defaultValue && !/^[0-9]+.?[0-9]*$/.test(data.field.defaultValue)) {
+                        layer.alert("字段默认值必须为数字！");
+                        return false;
+                    }
+
                     if (data.field.type == 1 && data.field.scopeStart > data.field.scopeEnd) {
                         layer.alert("字段范围错误，请选择正确的区间！");
                         return false;
                     }
 
-                    if (data.field.type == 1 && data.field.defaultValue && data.field.scopeStart) {
+                    /*if (data.field.type == 1 && data.field.defaultValue && data.field.scopeStart) {
                         if (data.field.defaultValue < data.field.scopeStart || (data.field.scopeEnd && data.field.defaultValue > data.field.scopeEnd)) {
                             layer.alert("字段默认值应该在字段范围区间内！");
                             return false;
                         }
-                    }
+                    }*/
 
                     //发异步，把数据提交给java
                     $.ajax({

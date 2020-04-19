@@ -49,4 +49,17 @@ public class DataController {
     public void exportData(HttpServletRequest request, HttpServletResponse response) {
         dataService.exportData(request, response);
     }
+
+    /**
+     * 删除数据
+     *
+     * @param data 数据
+     */
+    @RequestMapping("/removeData")
+    public ResultVO removeData(@RequestBody Data data) {
+        if (dataService.removeData(data) > 0) {
+            return ResultVOUtil.success();
+        }
+        return ResultVOUtil.failure(ResultFailureEnum.REMOVE_PROP_ERROR);
+    }
 }

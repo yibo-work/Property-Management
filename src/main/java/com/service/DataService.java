@@ -17,6 +17,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Clrvn
@@ -94,5 +95,67 @@ public class DataService {
                 writer.print("下载文件时发生错误.");
             }
         }
+    }
+
+    /**
+     * 删除数据
+     *
+     * @param data 数据
+     * @return 删除的行数
+     */
+    public int removeData(Data data) {
+
+        for (Data allData : new ArrayList<>(DataUtil.dataList)) {
+            for (Prop prop : allData.getPropList()) {
+                boolean bool = true;
+                for (Prop removeProp : data.getPropList()) {
+                    if (removeProp.getName().equals(prop.getName())) {
+                        if (!Objects.equals(removeProp.getOrder(), prop.getOrder()) ||
+                                !Objects.equals(removeProp.getType(), prop.getType()) ||
+                                !Objects.equals(removeProp.getRequired(), prop.getRequired()) ||
+                                !Objects.equals(removeProp.getDefaultValue(), prop.getDefaultValue()) ||
+                                !Objects.equals(removeProp.getScopeStart(), prop.getScopeStart()) ||
+                                !Objects.equals(removeProp.getScopeEnd(), prop.getScopeEnd()) ||
+                                !Objects.equals(removeProp.getLengthStart(), prop.getLengthStart()) ||
+                                !Objects.equals(removeProp.getLengthEnd(), prop.getLengthEnd()) ||
+                                !Objects.equals(removeProp.getUnit(), prop.getUnit()) ||
+                                !Objects.equals(removeProp.getParam(), prop.getParam()) ||
+                                !Objects.equals(removeProp.getValue(), prop.getValue())) {
+                            bool = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (bool && DataUtil.dataList.remove(allData)) {
+                    return 1;
+                }
+            }
+        }
+
+        /*if (DataUtil.dataList.removeIf(ele -> {
+            for (Prop prop : ele.getPropList()) {
+                for (Prop removeProp : data.getPropList()) {
+                    if (Objects.equals(removeProp.getOrder(), prop.getOrder()) &&
+                            Objects.equals(removeProp.getName(), prop.getName()) &&
+                            Objects.equals(removeProp.getType(), prop.getType()) &&
+                            Objects.equals(removeProp.getRequired(), prop.getRequired()) &&
+                            Objects.equals(removeProp.getDefaultValue(), prop.getDefaultValue()) &&
+                            Objects.equals(removeProp.getScopeStart(), prop.getScopeStart()) &&
+                            Objects.equals(removeProp.getScopeEnd(), prop.getScopeEnd()) &&
+                            Objects.equals(removeProp.getLengthStart(), prop.getLengthStart()) &&
+                            Objects.equals(removeProp.getLengthEnd(), prop.getLengthEnd()) &&
+                            Objects.equals(removeProp.getUnit(), prop.getUnit()) &&
+                            Objects.equals(removeProp.getParam(), prop.getParam()) &&
+                            Objects.equals(removeProp.getValue(), prop.getValue())) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        })) {
+            return 1;
+        }*/
+        return 0;
     }
 }

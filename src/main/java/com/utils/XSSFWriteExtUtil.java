@@ -45,17 +45,24 @@ public class XSSFWriteExtUtil {
                     Row row = sheet.createRow(startRow);
                     int col = 0;
                     List<Prop> collect = data.getPropList().stream().sorted(Comparator.comparingInt(Prop::getOrder)).collect(Collectors.toList());
-                    for (Prop prop : collect) {
-                        String listCell = prop.getValue();
-                        Cell cell = row.createCell(col);
-                        if (null == listCell) {
-                            cell.setCellType(3);
-                            cell.setCellValue("");
-                        } else {
-                            cell.setCellType(1);
-                            cell.setCellValue(listCell);
+                    if (null != header && header.size() > 0) {
+                        for (String head : header) {
+                            for (Prop prop : collect) {
+                                if (prop.getName().equals(head)){
+                                    String listCell = prop.getValue();
+                                    Cell cell = row.createCell(col);
+                                    if (null == listCell) {
+                                        cell.setCellType(3);
+                                        cell.setCellValue("");
+                                    } else {
+                                        cell.setCellType(1);
+                                        cell.setCellValue(listCell);
+                                    }
+                                    break;
+                                }
+                            }
+                            col++;
                         }
-                        col++;
                     }
 
                     ++startRow;

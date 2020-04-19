@@ -75,14 +75,10 @@ public class Prop {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Prop prop = (Prop) o;
-        return name.equals(prop.name);
+        return Objects.equals(name, prop.name);
     }
 
     @Override

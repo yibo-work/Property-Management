@@ -98,7 +98,7 @@
 
                         if (type === 1) {
                             //数字的话只能填数字
-                            if (!reg.test(value)) {
+                            if (value.trim().length > 0 && !reg.test(value)) {
                                 layer.alert("【" + name + "】输入错误，提示：请输入数字!");
                                 isOK = false;
                                 return false;
