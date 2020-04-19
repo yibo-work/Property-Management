@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.PlanMapper">
+
+    <!--查询所有planVOMap-->
+    <resultMap id="PlanVOMap" type="com.vo.PlanVO">
+        <association property="plan" javaType="com.pojo.Plan">
+            <id column="planId" property="id"/>
+            <result property="companyName" column="planCompanyName"/>
+            <result property="execTime" column="exec_time"/>
+            <result property="phone" column="planPhone"/>
+            <result property="address" column="planAddress"/>
+            <result property="type" column="type"/>
+            <result property="rank" column="rank"/>
+            <result property="status" column="status"/>
+            <result property="customerId" column="customer_id"/>
+            <result property="userId" column="user_id"/>
+        </association>
+        <association property="customer" javaType="com.pojo.Customer">
+            <id column="customerId" property="id"/>
+            <result property="companyName" column="customerCompanyName"/>
+            <result property="man" column="man"/>
+            <result property="phone" column="customerPhone"/>
+            <result property="address" column="customerAddress"/>
+            <result property="planFlag" column="plan_flag"/>
+        </association>
+        <association property="user" javaType="com.pojo.User">
+            <id column="userId" property="id"/>
+            <result property="name" column="name"/>
+            <result property="password" column="password"/>
+            <result property="phone" column="userPhone"/>
+            <result property="roleId" column="role_id"/>
+        </association>
+    </resultMap>
+
+
+    <!--查询计划-->
+    <select id="queryPlanList" resultMap="PlanVOMap">
+        select a.id as planId, a.company_name as planCompanyName, exec_time , a.phone as planPhone, a.address as
+        planAddress, type, `rank`, status, customer_id, user_id,
+        s.id as customerId, s.company_name as customerCompanyName, man, s.phone as customerPhone, s.address as
+        customerAddress, plan_flag,
+        d.id, name, password, d.phone as userPhone, role_id
+        from plan as a
+        inner join `customer` s ON a.customer_id = s.id
+        left join `user` d ON a.user_id = d.id
+        <where>
+            <if test="type != null and type != ''">
+                and type = #{type, jdbcType=INTEGER}
+            </if>
+            <if test="status != null">
+                and `status` = #{status}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and a.company_name like concat('%', #{companyName, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="execTime != null and execTime != ''">
+                and exec_time like concat('%', #{execTime, jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by `rank`
+    </select>
+
+    <!--新增计划-->
+    <insert id="addPlan">
+        insert into plan(company_name, exec_time, phone, address, type, `rank`, status, customer_id)
+        values (#{plan.companyName,jdbcType=VARCHAR}, #{plan.execTime,jdbcType=VARCHAR},
+                #{plan.phone,jdbcType=VARCHAR}, #{plan.address,jdbcType=VARCHAR}, #{plan.type,jdbcType=INTEGER},
+                #{plan.rank,jdbcType=INTEGER}, #{plan.status,jdbcType=INTEGER}, #{plan.customerId,jdbcType=INTEGER});
+    </insert>
+
+    <!--查询单个计划-->
+    <select id="getPlanById" resultMap="PlanVOMap">
+        select a.id           as planId,
+               a.company_name as planCompanyName,
+               exec_time,
+               a.phone        as planPhone,
+               a.address      as planAddress,
+               type,
+               `rank`,
+               status,
+               customer_id,
+               user_id,
+               s.id           as customerId,
+               s.company_name as customerCompanyName,
+               man,
+               s.phone        as customerPhone,
+               s.address      as customerAddress,
+               plan_flag,
+               d.id,
+               name,
+               password,
+               d.phone        as userPhone,
+               role_id
+        from plan as a
+                 inner join `customer` s ON a.customer_id = s.id
+                 left join `user` d ON a.user_id = d.id
+        where a.id = #{id};
+    </select>
+
+    <!--修改计划-->
+    <update id="updatePlan">
+        update plan
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{plan.id,jdbcType=INTEGER}">
+            <if test="plan.companyName != null and plan.companyName !=''">
+                company_name=#{plan.companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="plan.execTime != null and plan.execTime !=''">
+                exec_time=#{plan.execTime,jdbcType=VARCHAR},
+            </if>
+            <if test="plan.phone != null and plan.phone !=''">
+                phone=#{plan.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="plan.address != null and plan.address !=''">
+                address=#{plan.address,jdbcType=VARCHAR},
+            </if>
+            <if test="plan.type != null and plan.type !=''">
+                type=#{plan.type,jdbcType=INTEGER},
+            </if>
+            <if test="plan.rank != null and plan.rank !=''">
+                `rank`=#{plan.rank,jdbcType=INTEGER},
+            </if>
+            <if test="plan.status != null and plan.status !=''">
+                `status`=#{plan.status,jdbcType=INTEGER},
+            </if>
+            <if test="plan.customerId != null and plan.customerId !=''">
+                customer_id=#{plan.customerId,jdbcType=INTEGER},
+            </if>
+            <if test="plan.userId != null and plan.userId !=''">
+                user_id = #{plan.userId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        ;
+    </update>
+
+    <!--删除计划-->
+    <delete id="removePlanById">
+        delete
+        from plan
+        where id = #{id}
+    </delete>
+
+
+</mapper>

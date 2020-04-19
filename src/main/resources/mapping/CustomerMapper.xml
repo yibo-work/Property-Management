@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.CustomerMapper">
+
+    <!--查询客户-->
+    <select id="queryCustomerList" resultType="com.pojo.Customer">
+        select id, company_name, man, phone, address, plan_flag
+        from customer
+        <where>
+            <if test="planFlag != null">
+                plan_Flag = #{planFlag,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!--新增客户-->
+    <insert id="addCustomer">
+        insert into customer(company_name, man, phone, address)
+        values (#{customer.companyName,jdbcType=VARCHAR}, #{customer.man,jdbcType=VARCHAR},
+                #{customer.phone,jdbcType=VARCHAR}, #{customer.address,jdbcType=VARCHAR});
+    </insert>
+
+    <!--查询单个客户-->
+    <select id="getCustomerById" resultType="com.pojo.Customer" useCache="true">
+        Select *
+        from customer
+        where id = #{id};
+    </select>
+
+    <!--修改客户-->
+    <update id="updateCustomer">
+        update customer
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{customer.id}">
+            <if test="customer.companyName != null and customer.companyName !=''">
+                company_name = #{customer.companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="customer.man != null and customer.man !=''">
+                man=#{customer.man},
+            </if>
+            <if test="customer.phone != null and customer.phone !=''">
+                phone=#{customer.phone},
+            </if>
+            <if test="customer.address != null and customer.address !=''">
+                address = #{customer.address},
+            </if>
+            <if test="customer.planFlag != null and customer.planFlag !=''">
+                plan_flag=#{customer.planFlag},
+            </if>
+        </trim>
+    </update>
+
+    <!--删除客户-->
+    <delete id="removeCustomerById">
+        delete
+        from customer
+        where id = #{id}
+    </delete>
+
+
+</mapper>

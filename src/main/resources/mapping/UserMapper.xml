@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.UserMapper">
+
+    <!--添加用户-->
+    <insert id="addUser">
+        insert into user(name, password, phone, role_id)
+        value (#{user.name,jdbcType=VARCHAR},
+        <!--这个就是默认的密码：123-->
+        '123',
+        #{user.phone,jdbcType=VARCHAR},
+        #{user.roleId,jdbcType=INTEGER});
+    </insert>
+
+    <!--修改用户-->
+    <update id="modifyUser">
+        update user
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{user.id}">
+            <if test="user.name != null and user.name !=''">
+                name = #{user.name,jdbcType=VARCHAR},
+            </if>
+            <if test="user.phone != null and user.phone !=''">
+                phone=#{user.phone},
+            </if>
+            <if test="user.roleId != null and user.roleId !=''">
+                role_id=#{user.roleId},
+            </if>
+        </trim>
+    </update>
+
+    <!--角色管理-->
+    <update id="updateRole">
+        update role
+        set auths = #{role.auths,jdbcType=VARCHAR}
+        where id = #{role.id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteUserById">
+        DELETE
+        from user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--查询所有UserMap-->
+    <resultMap id="UserMap" type="com.vo.User">
+        <association property="user" javaType="com.pojo.User">
+            <id column="userId" property="id"/>
+            <result property="name" column="username"/>
+            <result property="password" column="password"/>
+            <result property="phone" column="phone"/>
+            <result property="roleId" column="roleId"/>
+        </association>
+        <association property="role" javaType="com.pojo.Role">
+            <id column="roleId" property="id"/>
+            <result property="name" column="roleName"/>
+            <result property="auths" column="auths"/>
+        </association>
+    </resultMap>
+
+    <!--登录-->
+    <select id="login" resultMap="UserMap">
+        Select *, a.name as username, s.name as roleName, a.id as userId, s.id as roleId
+        from user as a
+                 inner join `role` s ON a.role_id = s.id
+        where a.name = #{user.name}
+          and password = #{user.password}
+    </select>
+
+    <select id="getUserList" resultType="com.pojo.User">
+        SELECT *
+        from user
+        where role_id = 1
+    </select>
+
+    <select id="queryUserList" resultType="com.pojo.User">
+        SELECT *
+        from user
+    </select>
+    <select id="getUserById" resultType="com.pojo.User">
+        select *
+        from user
+        where id = #{userId,jdbcType=INTEGER};
+    </select>
+
+
+</mapper>
